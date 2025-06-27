@@ -5,150 +5,140 @@ const BASE_URL = 'https://rickandmortyapi.com/api';
  * Documentation: https://rickandmortyapi.com/documentation/#rest
  */
 
-class RickService {
-  /**
-   * Get all characters with pagination
-   * @param {number} page - Page number (default: 1)
-   * @param {string} name - Filter by name
-   * @param {string} status - Filter by status (alive, dead, unknown)
-   * @param {string} species - Filter by species
-   * @param {string} gender - Filter by gender (female, male, genderless, unknown)
-   * @returns {Promise<Object>} Characters data with pagination info
-   */
-  static async getCharacters(page = 1, filters = {}) {
-    try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        ...filters
-      });
-      
-      const response = await fetch(`${BASE_URL}/character?${params}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+/**
+ * Get characters with pagination
+ * @param {number} page - Page number (default: 1)
+ * @returns {Promise<{info: Object, results: Array}>} Characters data with pagination info
+ */
+export const getCharacters = async (page = 1) => {
+  try {
+    const response = await fetch(`${BASE_URL}/character/?page=${page}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('No characters found for this page');
       }
-      
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching characters:', error);
-      throw error;
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    
+    const data = await response.json();
+    
+    // Ensure structured return format
+    return {
+      info: data.info || {},
+      results: data.results || []
+    };
+  } catch (error) {
+    console.error('Error fetching characters:', error);
+    throw error;
   }
+};
 
-  /**
-   * Get a single character by ID
-   * @param {number|string} id - Character ID
-   * @returns {Promise<Object>} Character data
-   */
-  static async getCharacterById(id) {
-    try {
-      const response = await fetch(`${BASE_URL}/character/${id}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+/**
+ * Get a single character by ID
+ * @param {number|string} id - Character ID
+ * @returns {Promise<Object>} Character data
+ */
+export const getCharacter = async (id) => {
+  try {
+    if (!id) {
+      throw new Error('Character ID is required');
+    }
+
+    const response = await fetch(`${BASE_URL}/character/${id}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error(`Character with ID ${id} not found`);
       }
-      
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching character:', error);
-      throw error;
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching character ${id}:`, error);
+    throw error;
   }
+};
 
-  /**
-   * Get multiple characters by IDs
-   * @param {Array<number|string>} ids - Array of character IDs
-   * @returns {Promise<Array<Object>>} Array of character data
-   */
-  static async getMultipleCharacters(ids) {
-    try {
-      const idsString = ids.join(',');
-      const response = await fetch(`${BASE_URL}/character/${idsString}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+/**
+ * Get multiple episodes by IDs
+ * @param {Array<number|string>} idsArray - Array of episode IDs
+ * @returns {Promise<Array<Object>|Object>} Episode data (array if multiple, object if single)
+ */
+export const getMultipleEpisodes = async (idsArray) => {
+  try {
+    if (!Array.isArray(idsArray) || idsArray.length === 0) {
+      throw new Error('Episode IDs array is required and cannot be empty');
+    }
+
+    // Filter out any invalid IDs
+    const validIds = idsArray.filter(id => id && !isNaN(id));
+    
+    if (validIds.length === 0) {
+      throw new Error('No valid episode IDs provided');
+    }
+
+    const response = await fetch(`${BASE_URL}/episode/${validIds.join(',')}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Episodes not found');
       }
-      
-      const data = await response.json();
-      return Array.isArray(data) ? data : [data];
-    } catch (error) {
-      console.error('Error fetching multiple characters:', error);
-      throw error;
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    
+    const data = await response.json();
+    
+    // API returns single object for one ID, array for multiple IDs
+    // Maintain this behavior for consistency
+    return data;
+  } catch (error) {
+    console.error('Error fetching episodes:', error);
+    throw error;
   }
+};
 
-  /**
-   * Get all locations with pagination
-   * @param {number} page - Page number (default: 1)
-   * @param {string} name - Filter by name
-   * @param {string} type - Filter by type
-   * @param {string} dimension - Filter by dimension
-   * @returns {Promise<Object>} Locations data with pagination info
-   */
-  static async getLocations(page = 1, filters = {}) {
-    try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        ...filters
-      });
-      
-      const response = await fetch(`${BASE_URL}/location?${params}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+/**
+ * Get location by URL (optional)
+ * @param {string} url - Full URL to the location endpoint
+ * @returns {Promise<Object>} Location data
+ */
+export const getLocation = async (url) => {
+  try {
+    if (!url || typeof url !== 'string') {
+      throw new Error('Location URL is required and must be a string');
+    }
+
+    // Validate that it's a Rick and Morty API URL
+    if (!url.includes('rickandmortyapi.com/api/location/')) {
+      throw new Error('Invalid Rick and Morty API location URL');
+    }
+
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Location not found');
       }
-      
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-      throw error;
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching location:', error);
+    throw error;
   }
+};
 
-  /**
-   * Get all episodes with pagination
-   * @param {number} page - Page number (default: 1)
-   * @param {string} name - Filter by name
-   * @param {string} episode - Filter by episode code
-   * @returns {Promise<Object>} Episodes data with pagination info
-   */
-  static async getEpisodes(page = 1, filters = {}) {
-    try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        ...filters
-      });
-      
-      const response = await fetch(`${BASE_URL}/episode?${params}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching episodes:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Search characters by name
-   * @param {string} query - Search query
-   * @returns {Promise<Object>} Search results
-   */
-  static async searchCharacters(query) {
-    try {
-      return await this.getCharacters(1, { name: query });
-    } catch (error) {
-      console.error('Error searching characters:', error);
-      throw error;
-    }
-  }
-}
+// Default export for backward compatibility
+const RickService = {
+  getCharacters,
+  getCharacter,
+  getMultipleEpisodes,
+  getLocation
+};
 
 export default RickService; 
