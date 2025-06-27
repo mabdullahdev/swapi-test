@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@custom-variant dark (&:where(.dark, .dark *));
 /* Base CSS for every web project */
 
 /* Box sizing rules */

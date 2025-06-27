@@ -4,6 +4,7 @@ import CharacterCard from '../components/CharacterCard';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 import PaginationControls from '../components/PaginationControls';
+import ThemeToggle from '../components/ThemeToggle';
 
 const CharacterListPage = () => {
   const [characters, setCharacters] = useState([]);
@@ -89,7 +90,7 @@ const CharacterListPage = () => {
   // Only show full page loader on initial load
   if (loading && characters.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
         <Loader message="Loading characters..." />
       </div>
     );
@@ -97,21 +98,26 @@ const CharacterListPage = () => {
 
   if (error && characters.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
         <ErrorMessage message={error} onRetry={handleRetry} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">
+      <header className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center relative">
+          {/* Theme Toggle - Positioned absolutely in top right */}
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+            <ThemeToggle />
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-3">
             Rick and Morty Characters
           </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
             Explore the multiverse of characters from the Rick and Morty universe
           </p>
         </div>
@@ -124,7 +130,7 @@ const CharacterListPage = () => {
           <form onSubmit={handleSearchSubmit} className="max-w-lg mx-auto">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -133,7 +139,7 @@ const CharacterListPage = () => {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Search characters by name..."
-                className="block w-full pl-12 pr-12 py-4 text-lg border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 shadow-sm focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                className="block w-full pl-12 pr-12 py-4 text-lg border border-gray-300 dark:border-gray-600 rounded-xl leading-5 bg-white dark:bg-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm focus:outline-none focus:placeholder-gray-400 dark:focus:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               />
               {searchLoading && (
                 <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
@@ -150,7 +156,7 @@ const CharacterListPage = () => {
         {/* Pagination - Before Cards */}
         {characters.length > 0 && (
           <div className="mb-8 text-center">
-            <div className="bg-white rounded-xl shadow-lg p-6 inline-block">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 inline-block border dark:border-gray-700">
               <PaginationControls
                 currentPage={currentPage}
                 totalPages={info.pages}
@@ -162,13 +168,13 @@ const CharacterListPage = () => {
               
               {/* Page Info */}
               <div className="mt-4">
-                <p className="text-gray-600 text-sm">
-                  Showing page <span className="font-semibold text-gray-900">{currentPage}</span> of <span className="font-semibold text-gray-900">{info.pages || '?'}</span>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                  Showing page <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> of <span className="font-semibold text-gray-900 dark:text-white">{info.pages || '?'}</span>
                   {info.count && (
-                    <span className="block sm:inline mt-1 sm:mt-0"> • <span className="font-semibold text-gray-900">{info.count.toLocaleString()}</span> total characters</span>
+                    <span className="block sm:inline mt-1 sm:mt-0"> • <span className="font-semibold text-gray-900 dark:text-white">{info.count.toLocaleString()}</span> total characters</span>
                   )}
                   {debouncedSearchQuery && (
-                    <span className="block mt-1"> • Filtered by: <span className="font-semibold text-blue-600">"{debouncedSearchQuery}"</span></span>
+                    <span className="block mt-1"> • Filtered by: <span className="font-semibold text-blue-600 dark:text-blue-400">"{debouncedSearchQuery}"</span></span>
                   )}
                 </p>
               </div>
@@ -180,8 +186,8 @@ const CharacterListPage = () => {
         <div className="relative">
           {/* Overlay loader for search operations */}
           {searchLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-10 rounded-2xl">
-              <div className="bg-white rounded-xl shadow-lg p-8">
+            <div className="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-10 rounded-2xl">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border dark:border-gray-700">
                 <Loader message="Searching characters..." />
               </div>
             </div>
@@ -200,8 +206,8 @@ const CharacterListPage = () => {
         {characters.length === 0 && !loading && !searchLoading && !error && (
           <div className="text-center py-20">
             <div className="text-8xl mb-6">🤷‍♂️</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">No characters found</h3>
-            <p className="text-gray-600 text-lg max-w-md mx-auto">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">No characters found</h3>
+            <p className="text-gray-600 dark:text-gray-300 text-lg max-w-md mx-auto">
               {debouncedSearchQuery ? `No characters found matching "${debouncedSearchQuery}". Try a different search term.` : 'Try adjusting your search or filters'}
             </p>
           </div>
@@ -210,7 +216,7 @@ const CharacterListPage = () => {
         {/* Error State for search operations */}
         {error && characters.length === 0 && !loading && (
           <div className="text-center py-20">
-            <div className="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-md mx-auto border dark:border-gray-700">
               <ErrorMessage message={error} onRetry={handleRetry} />
             </div>
           </div>

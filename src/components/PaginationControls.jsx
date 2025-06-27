@@ -14,8 +14,8 @@ const PaginationControls = ({
       <button 
         className={`py-2.5 px-5 rounded text-base font-medium transition-colors duration-300 ${
           !hasPrev 
-            ? 'bg-gray-400 text-white cursor-not-allowed opacity-60' 
-            : 'bg-blue-500 hover:bg-blue-700 text-white cursor-pointer'
+            ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed opacity-60' 
+            : 'bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 text-white cursor-pointer'
         }`}
         onClick={onPrev}
         disabled={!hasPrev}
@@ -23,15 +23,15 @@ const PaginationControls = ({
         Previous
       </button>
       
-      <span className="text-base text-gray-800 font-medium">
+      <span className="text-base text-gray-800 dark:text-gray-200 font-medium">
         Page {currentPage} of {totalPages || '?'}
       </span>
       
       <button 
         className={`py-2.5 px-5 rounded text-base font-medium transition-colors duration-300 ${
           !hasNext 
-            ? 'bg-gray-400 text-white cursor-not-allowed opacity-60' 
-            : 'bg-blue-500 hover:bg-blue-700 text-white cursor-pointer'
+            ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed opacity-60' 
+            : 'bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 text-white cursor-pointer'
         }`}
         onClick={onNext}
         disabled={!hasNext}

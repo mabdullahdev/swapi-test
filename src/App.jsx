@@ -1,15 +1,18 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { CharacterListPage, CharacterDetailPage } from './pages';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import CharacterListPage from './pages/CharacterListPage';
+import CharacterDetailPage from './pages/CharacterDetailPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<CharacterListPage />} />
-        <Route path="/character/:id" element={<CharacterDetailPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<CharacterListPage />} />
+          <Route path="/character/:id" element={<CharacterDetailPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
