@@ -104,28 +104,26 @@ const CharacterListPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-              Rick and Morty Characters
-            </h1>
-            <p className="text-gray-600 text-sm sm:text-base">
-              Explore the multiverse of characters from the Rick and Morty universe
-            </p>
-          </div>
+      <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">
+            Rick and Morty Characters
+          </h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Explore the multiverse of characters from the Rick and Morty universe
+          </p>
         </div>
       </header>
       
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Search Bar */}
-        <div className="mb-8">
-          <form onSubmit={handleSearchSubmit} className="max-w-md mx-auto">
+        <div className="mb-12 text-center">
+          <form onSubmit={handleSearchSubmit} className="max-w-lg mx-auto">
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -135,11 +133,11 @@ const CharacterListPage = () => {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Search characters by name..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full pl-12 pr-12 py-4 text-lg border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 shadow-sm focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               />
               {searchLoading && (
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <svg className="animate-spin h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24">
+                <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
+                  <svg className="animate-spin h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -149,18 +147,49 @@ const CharacterListPage = () => {
           </form>
         </div>
 
+        {/* Pagination - Before Cards */}
+        {characters.length > 0 && (
+          <div className="mb-8 text-center">
+            <div className="bg-white rounded-xl shadow-lg p-6 inline-block">
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={info.pages}
+                hasNext={!!info.next}
+                hasPrev={!!info.prev}
+                onNext={handleNextPage}
+                onPrev={handlePrevPage}
+              />
+              
+              {/* Page Info */}
+              <div className="mt-4">
+                <p className="text-gray-600 text-sm">
+                  Showing page <span className="font-semibold text-gray-900">{currentPage}</span> of <span className="font-semibold text-gray-900">{info.pages || '?'}</span>
+                  {info.count && (
+                    <span className="block sm:inline mt-1 sm:mt-0"> • <span className="font-semibold text-gray-900">{info.count.toLocaleString()}</span> total characters</span>
+                  )}
+                  {debouncedSearchQuery && (
+                    <span className="block mt-1"> • Filtered by: <span className="font-semibold text-blue-600">"{debouncedSearchQuery}"</span></span>
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Character Grid with relative loader */}
         <div className="relative">
           {/* Overlay loader for search operations */}
           {searchLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10 rounded-lg">
-              <Loader message="Searching characters..." />
+            <div className="absolute inset-0 bg-white bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-10 rounded-2xl">
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <Loader message="Searching characters..." />
+              </div>
             </div>
           )}
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
             {characters.map((character) => (
-              <div key={character.id} className="transform transition-transform duration-200 hover:scale-105">
+              <div key={character.id} className="w-full max-w-sm transform transition-all duration-300 hover:scale-105 hover:-translate-y-2">
                 <CharacterCard character={character} />
               </div>
             ))}
@@ -169,51 +198,24 @@ const CharacterListPage = () => {
         
         {/* Empty State */}
         {characters.length === 0 && !loading && !searchLoading && !error && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🤷‍♂️</div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No characters found</h3>
-            <p className="text-gray-500">
-              {debouncedSearchQuery ? `No characters found matching "${debouncedSearchQuery}"` : 'Try adjusting your search or filters'}
+          <div className="text-center py-20">
+            <div className="text-8xl mb-6">🤷‍♂️</div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">No characters found</h3>
+            <p className="text-gray-600 text-lg max-w-md mx-auto">
+              {debouncedSearchQuery ? `No characters found matching "${debouncedSearchQuery}". Try a different search term.` : 'Try adjusting your search or filters'}
             </p>
           </div>
         )}
 
         {/* Error State for search operations */}
         {error && characters.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <ErrorMessage message={error} onRetry={handleRetry} />
+          <div className="text-center py-20">
+            <div className="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
+              <ErrorMessage message={error} onRetry={handleRetry} />
+            </div>
           </div>
         )}
       </main>
-      
-      {/* Pagination */}
-      {characters.length > 0 && (
-        <div className="bg-white border-t border-gray-200 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <PaginationControls
-              currentPage={currentPage}
-              totalPages={info.pages}
-              hasNext={!!info.next}
-              hasPrev={!!info.prev}
-              onNext={handleNextPage}
-              onPrev={handlePrevPage}
-            />
-            
-            {/* Page Info */}
-            <div className="text-center pb-6">
-              <p className="text-sm text-gray-600">
-                Showing page {currentPage} of {info.pages || '?'} 
-                {info.count && (
-                  <span> • Total characters: {info.count.toLocaleString()}</span>
-                )}
-                {debouncedSearchQuery && (
-                  <span> • Filtered by: "{debouncedSearchQuery}"</span>
-                )}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -145,7 +145,7 @@ const CharacterDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
         <Loader message="Loading character details..." />
       </div>
     );
@@ -153,7 +153,7 @@ const CharacterDetailPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
         <ErrorMessage message={error} onRetry={handleRetry} />
       </div>
     );
@@ -161,19 +161,19 @@ const CharacterDetailPage = () => {
 
   if (!character) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
         <ErrorMessage message="Character not found" onRetry={handleRetry} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center mx-auto">
           <button 
-            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 mb-4"
+            className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 mb-4"
             onClick={handleBackClick}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,16 +181,16 @@ const CharacterDetailPage = () => {
             </svg>
             Back to Characters
           </button>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{character.name}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">{character.name}</h1>
         </div>
       </header>
       
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 justify-items-center lg:justify-items-stretch">
           {/* Character Image and Basic Info */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden sticky top-24">
+          <div className="lg:col-span-1 w-full max-w-md lg:max-w-none">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden sticky top-28">
               <div className="aspect-square">
                 <img 
                   src={character.image} 
@@ -199,26 +199,26 @@ const CharacterDetailPage = () => {
                 />
               </div>
               
-              <div className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">{character.name}</h2>
+              <div className="p-8 text-center">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">{character.name}</h2>
                 
                 {/* Status Badge */}
-                <div className="mb-4">
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(character.status)}`}>
-                    <span className={`w-2 h-2 rounded-full mr-2 ${getStatusDotColor(character.status)}`}></span>
+                <div className="mb-6">
+                  <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold shadow-sm ${getStatusColor(character.status)}`}>
+                    <span className={`w-2.5 h-2.5 rounded-full mr-2 ${getStatusDotColor(character.status)}`}></span>
                     {character.status}
                   </span>
                 </div>
                 
                 {/* Basic Info */}
-                <div className="space-y-3">
-                  <div>
-                    <span className="text-sm font-medium text-gray-500">Species</span>
-                    <p className="text-gray-900">{character.species}</p>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Species</span>
+                    <p className="text-lg font-medium text-gray-900 mt-1">{character.species}</p>
                   </div>
-                  <div>
-                    <span className="text-sm font-medium text-gray-500">Gender</span>
-                    <p className="text-gray-900">{character.gender}</p>
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Gender</span>
+                    <p className="text-lg font-medium text-gray-900 mt-1">{character.gender}</p>
                   </div>
                 </div>
               </div>
@@ -226,22 +226,22 @@ const CharacterDetailPage = () => {
           </div>
           
           {/* Detailed Information */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-8 w-full">
             {/* Origin and Location */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Origin & Location</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">Origin</h3>
-                  <p className="text-gray-900 font-medium">{character.origin?.name || 'Unknown'}</p>
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Origin & Location</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100 text-center">
+                  <h3 className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-3">Origin</h3>
+                  <p className="text-xl font-bold text-gray-900">{character.origin?.name || 'Unknown'}</p>
                 </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">Last Known Location</h3>
-                  <p className="text-gray-900 font-medium">{character.location?.name || 'Unknown'}</p>
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100 text-center">
+                  <h3 className="text-sm font-semibold text-green-600 uppercase tracking-wide mb-3">Last Known Location</h3>
+                  <p className="text-xl font-bold text-gray-900 mb-3">{character.location?.name || 'Unknown'}</p>
                   {location && (
-                    <div className="mt-2 text-sm text-gray-600">
-                      <p><span className="font-medium">Type:</span> {location.type}</p>
-                      <p><span className="font-medium">Dimension:</span> {location.dimension}</p>
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <p><span className="font-semibold">Type:</span> {location.type}</p>
+                      <p><span className="font-semibold">Dimension:</span> {location.dimension}</p>
                     </div>
                   )}
                 </div>
@@ -249,9 +249,9 @@ const CharacterDetailPage = () => {
             </div>
             
             {/* Episodes */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">
-                Episodes ({episodes.length})
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+                Episodes <span className="text-lg font-normal text-gray-500">({episodes.length})</span>
               </h2>
               
               {episodes.length > 0 ? (
@@ -259,24 +259,25 @@ const CharacterDetailPage = () => {
                   {episodes.map((episode) => (
                     <div 
                       key={episode.id} 
-                      className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all duration-200"
+                      className="border border-gray-200 rounded-xl p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-200 bg-gradient-to-r from-white to-gray-50"
                     >
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-semibold text-gray-900 text-sm">{episode.name}</h3>
-                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                      <div className="flex justify-between items-start mb-3">
+                        <h3 className="font-bold text-gray-900 text-base leading-tight pr-2">{episode.name}</h3>
+                        <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full whitespace-nowrap">
                           {episode.episode}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600">
-                        Air Date: {episode.air_date}
+                      <p className="text-sm text-gray-600 font-medium">
+                        📅 {episode.air_date}
                       </p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8">
-                  <div className="text-gray-400 text-4xl mb-4">📺</div>
-                  <p className="text-gray-500">No episode information available</p>
+                <div className="text-center py-12 bg-gray-50 rounded-xl">
+                  <div className="text-gray-400 text-6xl mb-4">📺</div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No Episodes Available</h3>
+                  <p className="text-gray-600">Episode information is not available for this character</p>
                 </div>
               )}
             </div>
