@@ -1,9 +1,16 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CharacterListPage, CharacterDetailPage } from './pages';
+
 function App() {
   return (
-    <div className="">
-      {/* Your content goes here */}
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CharacterListPage />} />
+        <Route path="/character/:id" element={<CharacterDetailPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
