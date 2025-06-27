@@ -6,13 +6,21 @@ const BASE_URL = 'https://rickandmortyapi.com/api';
  */
 
 /**
- * Get characters with pagination
+ * Get characters with pagination and optional name filter
  * @param {number} page - Page number (default: 1)
+ * @param {string} name - Optional name filter
  * @returns {Promise<{info: Object, results: Array}>} Characters data with pagination info
  */
-export const getCharacters = async (page = 1) => {
+export const getCharacters = async (page = 1, name = '') => {
   try {
-    const response = await fetch(`${BASE_URL}/character/?page=${page}`);
+    let url = `${BASE_URL}/character/?page=${page}`;
+    
+    // Add name filter if provided
+    if (name && name.trim()) {
+      url += `&name=${encodeURIComponent(name.trim())}`;
+    }
+    
+    const response = await fetch(url);
     
     if (!response.ok) {
       if (response.status === 404) {
