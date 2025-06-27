@@ -170,19 +170,11 @@ const CharacterListPage: React.FC = () => {
     fetchCharacters(currentPage, debouncedSearchQuery);
   };
 
-  // Only show full page loader on initial load
+  // Only show full page loader on initial load (when app is first starting)
   if (loading && !isInitialized.current) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
         <Loader message="Loading characters..." />
-      </div>
-    );
-  }
-
-  if (error && characters.length === 0) {
-    return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
-        <ErrorMessage message={error} onRetry={handleRetry} />
       </div>
     );
   }
@@ -334,26 +326,61 @@ const CharacterListPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Empty State */}
+        {/* Empty State - No Results Found */}
         {characters.length === 0 && !loading && !searchLoading && !error && (
           <div className="text-center py-20">
-            <div className="text-8xl mb-6">🤷‍♂️</div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              No characters found
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 text-lg max-w-md mx-auto">
-              {debouncedSearchQuery
-                ? `No characters found matching "${debouncedSearchQuery}". Try a different search term.`
-                : 'Try adjusting your search or filters'}
-            </p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-lg mx-auto border dark:border-gray-700">
+              <div className="text-8xl mb-6">
+                {debouncedSearchQuery ? '🔍' : '🤷‍♂️'}
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                {debouncedSearchQuery
+                  ? 'No Search Results'
+                  : 'No Characters Found'}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 text-lg max-w-md mx-auto mb-4">
+                {debouncedSearchQuery
+                  ? `No characters found matching your search.`
+                  : 'No characters are currently available.'}
+              </p>
+              {debouncedSearchQuery && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mt-4">
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    <span className="font-semibold">Search term:</span> "
+                    {debouncedSearchQuery}"
+                  </p>
+                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                    💡 Try different keywords, check spelling, or browse all
+                    characters by clearing the search.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
         {/* Error State for search operations */}
-        {error && characters.length === 0 && !loading && (
+        {error && characters.length === 0 && !loading && !searchLoading && (
           <div className="text-center py-20">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-md mx-auto border dark:border-gray-700">
-              <ErrorMessage message={error} onRetry={handleRetry} />
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-lg mx-auto border dark:border-gray-700">
+              <div className="text-6xl mb-6">⚠️</div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                {debouncedSearchQuery
+                  ? 'No Results Found'
+                  : 'Something went wrong'}
+              </h3>
+              <div className="text-gray-600 dark:text-gray-300 mb-6">
+                <ErrorMessage message={error} onRetry={handleRetry} />
+              </div>
+              {debouncedSearchQuery && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                  No characters found matching{' '}
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                    "{debouncedSearchQuery}"
+                  </span>
+                  . Try a different search term or check your spelling.
+                </p>
+              )}
             </div>
           </div>
         )}
