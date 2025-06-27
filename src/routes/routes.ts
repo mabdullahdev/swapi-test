@@ -7,24 +7,20 @@ export const ROUTES = {
   CHARACTER_LIST: '/characters',
   CHARACTER_DETAIL: '/character/:id',
   SEARCH: '/search',
-  ABOUT: '/about'
+  ABOUT: '/about',
 };
 
 /**
  * Generate character detail route with ID
- * @param {number|string} id - Character ID
- * @returns {string} Character detail route
  */
-export const getCharacterRoute = (id) => {
+export const getCharacterRoute = (id: number | string): string => {
   return `/character/${id}`;
 };
 
 /**
  * Generate search route with query
- * @param {string} query - Search query
- * @returns {string} Search route with query parameter
  */
-export const getSearchRoute = (query) => {
+export const getSearchRoute = (query: string): string => {
   return `/search?q=${encodeURIComponent(query)}`;
 };
 
@@ -35,28 +31,28 @@ export const routeConfig = [
   {
     path: ROUTES.HOME,
     name: 'Home',
-    exact: true
+    exact: true,
   },
   {
     path: ROUTES.CHARACTER_LIST,
     name: 'Characters',
-    exact: true
+    exact: true,
   },
   {
     path: ROUTES.CHARACTER_DETAIL,
     name: 'Character Detail',
-    exact: true
+    exact: true,
   },
   {
     path: ROUTES.SEARCH,
     name: 'Search',
-    exact: true
+    exact: true,
   },
   {
     path: ROUTES.ABOUT,
     name: 'About',
-    exact: true
-  }
+    exact: true,
+  },
 ];
 
-export default ROUTES; 
+export default ROUTES;

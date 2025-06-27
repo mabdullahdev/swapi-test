@@ -1,9 +1,8 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CharacterListPage from './pages/CharacterListPage';
 import CharacterDetailPage from './pages/CharacterDetailPage';
 
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
@@ -14,6 +13,6 @@ function App() {
       </div>
     </Router>
   );
-}
+};
 
 export default App;

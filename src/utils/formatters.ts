@@ -1,3 +1,5 @@
+import { StatusInfo } from '../types/components';
+
 /**
  * Utility functions for formatting data display
  */
@@ -7,29 +9,33 @@
  * @param {string} status - Character status (alive, dead, unknown)
  * @returns {Object} Object with status text and CSS class
  */
-export const formatCharacterStatus = (status) => {
+export const formatCharacterStatus = (status: string): StatusInfo => {
   const normalizedStatus = status?.toLowerCase();
-  
+
   switch (normalizedStatus) {
     case 'alive':
       return {
         text: 'Alive',
-        className: 'status-alive'
+        className: 'status-alive',
+        color: 'green',
       };
     case 'dead':
       return {
         text: 'Dead',
-        className: 'status-dead'
+        className: 'status-dead',
+        color: 'red',
       };
     case 'unknown':
       return {
         text: 'Unknown',
-        className: 'status-unknown'
+        className: 'status-unknown',
+        color: 'gray',
       };
     default:
       return {
         text: status || 'Unknown',
-        className: 'status-unknown'
+        className: 'status-unknown',
+        color: 'gray',
       };
   }
 };
@@ -39,7 +45,7 @@ export const formatCharacterStatus = (status) => {
  * @param {string} str - String to capitalize
  * @returns {string} Capitalized string
  */
-export const capitalize = (str) => {
+export const capitalize = (str: string): string => {
   if (!str || typeof str !== 'string') {
     return '';
   }
@@ -51,16 +57,16 @@ export const capitalize = (str) => {
  * @param {string} episode - Episode code (e.g., "S01E01")
  * @returns {string} Formatted episode string
  */
-export const formatEpisode = (episode) => {
+export const formatEpisode = (episode: string): string => {
   if (!episode) return '';
-  
+
   // Extract season and episode numbers
   const match = episode.match(/S(\d+)E(\d+)/);
   if (match) {
     const [, season, ep] = match;
     return `Season ${parseInt(season)} Episode ${parseInt(ep)}`;
   }
-  
+
   return episode;
 };
 
@@ -70,15 +76,15 @@ export const formatEpisode = (episode) => {
  * @param {number} maxLength - Maximum length
  * @returns {string} Truncated text with ellipsis if needed
  */
-export const truncateText = (text, maxLength = 100) => {
+export const truncateText = (text: string, maxLength: number = 100): string => {
   if (!text || typeof text !== 'string') {
     return '';
   }
-  
+
   if (text.length <= maxLength) {
     return text;
   }
-  
+
   return text.substring(0, maxLength).trim() + '...';
 };
 
@@ -87,10 +93,10 @@ export const truncateText = (text, maxLength = 100) => {
  * @param {number} num - Number to format
  * @returns {string} Formatted number string
  */
-export const formatNumber = (num) => {
+export const formatNumber = (num: number): string => {
   if (typeof num !== 'number' || isNaN(num)) {
     return '0';
   }
-  
+
   return num.toLocaleString();
-}; 
+};
