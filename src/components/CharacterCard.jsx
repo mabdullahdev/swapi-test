@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { formatCharacterStatus } from '../utils/formatters';
 
-const CharacterCard = ({ character, onClick }) => {
+const CharacterCard = ({ character }) => {
   const statusInfo = formatCharacterStatus(character.status);
   
   return (
-    <div 
-      className="bg-white border border-gray-200 rounded-lg p-4 m-2 shadow-md hover:shadow-lg hover:-translate-y-1 hover:border-blue-500 transition-all duration-300 cursor-pointer"
-      onClick={() => onClick && onClick(character)}
+    <Link 
+      to={`/character/${character.id}`}
+      className="block bg-white border border-gray-200 rounded-lg p-4 m-2 shadow-md hover:shadow-lg hover:-translate-y-1 hover:border-blue-500 transition-all duration-300 cursor-pointer"
     >
       <img 
         src={character.image} 
@@ -32,13 +33,12 @@ const CharacterCard = ({ character, onClick }) => {
       <p className="text-sm text-gray-600">
         <span className="font-medium">Location:</span> {character.location?.name || 'Unknown'}
       </p>
-    </div>
+    </Link>
   );
 };
 
 CharacterCard.propTypes = {
-  character: PropTypes.object.isRequired,
-  onClick: PropTypes.func
+  character: PropTypes.object.isRequired
 };
 
 export default CharacterCard; 
